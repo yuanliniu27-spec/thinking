@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thinking Window - AI Thinking Experience Layer</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="Thinking Window Home">
+        <span class="brand-mark"></span>
+        <span>Thinking Window</span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#problem">痛点</a>
+        <a href="#demo">Demo</a>
+        <a href="#roadmap">路线</a>
+      </nav>
+      <a class="nav-cta" href="#demo">试用原型</a>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">AI Thinking Experience Layer</p>
+          <h1>把 30 秒等待，变成可感知、可参与、可信任的思考体验。</h1>
+          <p class="hero-lead">
+            Thinking Window 不是新的 loading 动画，而是一套为 AI 长耗时任务设计的过程体验层：
+            展示任务推进、分析结构、方案权衡和结果预告，不暴露原始思维链。
+          </p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#demo">启动 Thinking Demo</a>
+            <a class="secondary-btn" href="#principle">查看设计原则</a>
+          </div>
+          <div class="hero-metrics" aria-label="Prototype target metrics">
+            <div>
+              <strong>+20%</strong>
+              <span>深度任务完成率</span>
+            </div>
+            <div>
+              <strong>>40%</strong>
+              <span>等待期参与率</span>
+            </div>
+            <div>
+              <strong>4.5/5</strong>
+              <span>用户信任评分</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Thinking Window product visual">
+          <img src="./assets/thinking-interface.png" alt="AI thinking interface layers" />
+          <div class="glass-panel panel-one">
+            <span>Thinking Map</span>
+            <b>6 nodes active</b>
+          </div>
+          <div class="glass-panel panel-two">
+            <span>Trust Signal</span>
+            <b>82%</b>
+          </div>
+        </div>
+      </section>
+
+      <section class="problem" id="problem">
+        <div class="section-heading">
+          <p class="eyebrow">Why now</p>
+          <h2>传统进度条只能证明系统在加载，不能证明 AI 在认真思考。</h2>
+        </div>
+        <div class="problem-grid">
+          <article>
+            <span class="problem-index">01</span>
+            <h3>黑盒等待消耗信任</h3>
+            <p>用户不知道 AI 是否真的在分析、推理到哪里、是不是已经卡住。</p>
+          </article>
+          <article>
+            <span class="problem-index">02</span>
+            <h3>AI 推理不是线性进度</h3>
+            <p>深度任务包含理解、拆解、探索、淘汰和重组，不适合伪装成百分比。</p>
+          </article>
+          <article>
+            <span class="problem-index">03</span>
+            <h3>等待页正在成为转化页</h3>
+            <p>当等待不可避免，体验设计决定用户是否继续相信结果并完成采用。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="demo-section" id="demo">
+        <div class="section-heading compact">
+          <p class="eyebrow">Interactive Prototype</p>
+          <h2>输入一个复杂任务，进入 Thinking Screen。</h2>
+        </div>
+
+        <div class="demo-shell">
+          <aside class="input-pane">
+            <label for="taskInput">用户任务</label>
+            <textarea id="taskInput">帮我分析一个 AI Agent 产品如何在企业知识管理场景落地，并给出商业化路径。</textarea>
+            <button class="primary-btn full" id="startDemo" type="button">开始思考</button>
+            <div class="demo-note">
+              <span></span>
+              原型将 30 秒体验压缩演示：阶段推进、脑图生长、方案淘汰、可信度变化和结果预告。
+            </div>
+          </aside>
+
+          <section class="thinking-screen" aria-live="polite">
+            <div class="screen-header">
+              <div>
+                <p class="eyebrow">Thinking Screen</p>
+                <h3 id="screenTitle">AI 正在思考你的问题</h3>
+              </div>
+            </div>
+
+            <div class="progress-block" aria-label="Thinking progress">
+              <div class="progress-meta">
+                <span class="progress-label">任务推进</span>
+                <div class="progress-stages" id="progressStageList"></div>
+                <strong><span id="timerValue">30s</span> 预计剩余</strong>
+                <button class="pause-btn" id="pauseDemo" type="button" aria-label="暂停" title="暂停" aria-pressed="false"></button>
+              </div>
+              <div class="progress-rail">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+            </div>
+
+            <div class="preference-card">
+              <div class="card-title">你更关注什么？</div>
+              <div class="chips" id="preferenceChips">
+                <button type="button" data-pref="增长">增长</button>
+                <button type="button" data-pref="创新">创新</button>
+                <button type="button" data-pref="风险">风险</button>
+              </div>
+              <p id="preferenceFeedback">选择偏好后，Thinking Map 会即时调整权重。</p>
+            </div>
+
+            <div class="screen-grid">
+              <div class="stage-card">
+                <ul class="stage-list" id="stageList"></ul>
+              </div>
+
+              <div class="map-card">
+                <div class="card-title">Thinking Map</div>
+                <div class="map-canvas" id="mapCanvas"></div>
+              </div>
+
+              <div class="trust-card">
+                <div class="card-title">可信度仪表盘</div>
+                <div class="metric-row">
+                  <span>信息完整度</span>
+                  <strong id="metricInfo">48%</strong>
+                </div>
+                <div class="meter"><i id="meterInfo"></i></div>
+                <div class="metric-row">
+                  <span>推理稳定度</span>
+                  <strong id="metricLogic">61%</strong>
+                </div>
+                <div class="meter"><i id="meterLogic"></i></div>
+                <div class="metric-row">
+                  <span>案例覆盖度</span>
+                  <strong id="metricCase">35%</strong>
+                </div>
+                <div class="meter"><i id="meterCase"></i></div>
+              </div>
+            </div>
+
+            <div class="arena">
+              <div class="card-title">方案竞技场</div>
+              <div class="arena-grid" id="arenaGrid"></div>
+            </div>
+
+            <div class="result-preview" id="resultPreview">
+              <div class="result-content">
+                <p class="eyebrow">Result Preview</p>
+                <h3>最终答案结构已生成</h3>
+                <p id="resultText">等待最后验证完成后展示。</p>
+                <div class="result-timeline" id="resultTimeline" aria-label="Final answer timeline"></div>
+              </div>
+              <button class="secondary-btn" id="resetDemo" type="button">重置演示</button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="principle" id="principle">
+        <div class="section-heading compact">
+          <p class="eyebrow">Product Principle</p>
+          <h2>透明，但不裸露。</h2>
+        </div>
+        <div class="principle-grid">
+          <div>
+            <h3>应该展示</h3>
+            <p>任务阶段、分析维度、候选方案、淘汰原因、结果结构预告。</p>
+          </div>
+          <div>
+            <h3>不该展示</h3>
+            <p>Raw Chain of Thought、Token 级推理过程、未验证中间结论和假精确进度。</p>
+          </div>
+          <div>
+            <h3>体验配比</h3>
+            <p>透明度 60%，参与感 25%，惊喜感 15%。少展示模型如何想，多展示任务如何推进。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="roadmap" id="roadmap">
+        <div class="section-heading compact">
+          <p class="eyebrow">MVP Roadmap</p>
+          <h2>1 周可 Demo，4 周可产品化。</h2>
+        </div>
+        <div class="timeline">
+          <article>
+            <span>Phase 1 / 1 周</span>
+            <h3>可感知 Demo</h3>
+            <p>状态可视化、Thinking Map、可信度仪表盘、结果预告。</p>
+          </article>
+          <article>
+            <span>Phase 2 / 2 周</span>
+            <h3>可参与 Demo</h3>
+            <p>用户插话、方案竞技场、偏好权重反馈、结果结构动态更新。</p>
+          </article>
+          <article>
+            <span>Phase 3 / 4 周</span>
+            <h3>产品化组件</h3>
+            <p>多 Agent 辩论、Thinking Replay、思考风格切换、埋点与 A/B 实验。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js?v=12"></script>
+  </body>
+</html>
